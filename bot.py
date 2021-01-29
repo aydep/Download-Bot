@@ -21,6 +21,7 @@ async def start_command(msg: types.Message):
     global state
     state = dp.current_state(user=msg.from_user.id)
     await state.set_state(TestStates.all()[0])
+    await bot.send_message(msg.from_user.id, "Let's begin!")
     print(state)
 
 @dp.message_handler(state = TestStates.Q1)
@@ -56,7 +57,7 @@ async def get_res(msg: types.Message):
         video = yt.streams.filter(progressive = True, res = res+'p').first()
 
     await bot.send_message(msg.from_user.id, "Please wait...")
-    
+
     print("Downloading: " + str(video))
     video.download()
     print("Downloaded " + yt.title + ".mp4")
