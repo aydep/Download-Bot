@@ -21,7 +21,7 @@ async def start_command(msg: types.Message):
     global state
     state = dp.current_state(user=msg.from_user.id)
     await state.set_state(TestStates.all()[0])
-    await bot.send_message(msg.from_user.id, "Let's begin!")
+    await bot.send_message(msg.from_user.id, "Let's begin this shit!")
     print(state)
 
 @dp.message_handler(state = TestStates.Q1)
