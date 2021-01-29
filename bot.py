@@ -22,7 +22,7 @@ async def start_command(msg: types.Message):
     state = dp.current_state(user=msg.from_user.id)
     await state.set_state(TestStates.all()[0])
     await bot.send_message(msg.from_user.id, "Let's begin!")
-    print(state)
+    print("enterd command : start")
 
 @dp.message_handler(state = TestStates.Q1)
 async def get_url(msg: types.Message):
