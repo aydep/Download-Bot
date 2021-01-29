@@ -62,7 +62,7 @@ async def get_res(msg: types.Message):
     video.download()
     print("Downloaded " + yt.title + ".mp4")
 
-    video_name = 'D:\\Bots\\Aiogram\\DownloadBot\\'+yt.title
+    video_name = yt.title
     video_name = video_name.replace('/','')
     video_name = video_name.replace('*','')
     video_name = video_name.replace('.','')
