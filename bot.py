@@ -59,7 +59,7 @@ async def get_res(msg: types.Message):
     await bot.send_message(msg.from_user.id, "Please wait...")
 
     print("Downloading: " + str(video))
-    video.download()
+    video.download('/viedos')
     print("Downloaded " + yt.title + ".mp4")
 
     video_name = yt.title
@@ -68,7 +68,7 @@ async def get_res(msg: types.Message):
     video_name = video_name.replace('.','')
     print(video_name)
 
-    open_video = open(video_name + '.mp4', "rb")
+    open_video = open('videos/' + video_name + '.mp4', "rb")
     await bot.send_document(msg.from_user.id, open_video)
     open_video.close()
 
