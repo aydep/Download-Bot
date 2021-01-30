@@ -59,7 +59,7 @@ async def get_res(msg: types.Message):
     await bot.send_message(msg.from_user.id, "Please wait...")
 
     print("Downloading: " + str(video))
-    video.download('/viedos')
+    video.download('/videos')
     print("Downloaded " + yt.title + ".mp4")
 
     video_name = yt.title
