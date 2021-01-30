@@ -70,6 +70,7 @@ async def get_res(msg: types.Message):
 
     open_video = open(video_name + '.mp4', "rb")
     await bot.send_document(msg.from_user.id, open_video)
+    open_video.close()
 
     await bot.send_message(msg.from_user.id, "Done!")
 
