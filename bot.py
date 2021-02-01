@@ -9,6 +9,7 @@ from config import TOKEN
 
 import pytube
 import os
+import ftplib
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
@@ -68,11 +69,15 @@ async def get_res(msg: types.Message):
     video_name = video_name.replace('.','')
     print(video_name)
 
-    open_video = open('videos/' + video_name + '.mp4', "rb")
-    await bot.send_document(msg.from_user.id, open_video)
+    open_video = open(video_name + '.mp4', "rb")
+    session = ftplib.FTP('c97883yq.beget.tech','c97883yq_dwbot','Onm5b-1ju')
+    session.storbinary(open_video, file)
     open_video.close()
+    session.quit()
 
-    await bot.send_message(msg.from_user.id, "Done!")
+    video_name = video_name.replace(' ', '%20')
+
+    await bot.send_message(msg.from_user.id, "http://c97883yq.beget.tech/DownloadBotTmpVideos/" + video_name)
 
     await state.set_state(TestStates.all()[0])
 
