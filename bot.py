@@ -6,10 +6,11 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from utils import TestStates
 
 from config import TOKEN
+from ftplib import FTP
+from datetime import datetime
 
 import pytube
 import os
-import ftplib
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
@@ -70,14 +71,22 @@ async def get_res(msg: types.Message):
     print(video_name)
 
     open_video = open(video_name + '.mp4', "rb")
-    session = ftplib.FTP('c97883yq.beget.tech','c97883yq_dwbot','Onm5b-1ju')
-    session.storbinary('STOR ' + video_name + '.mp4', open_video)
+    ftp = FTP('c97883yq.beget.tech','c97883yq_dwbot','Onm5b-1ju')
+    ftp.storbinary('STOR ' + video_name + '.mp4', open_video)
     open_video.close()
-    session.quit()
+
+    files = ftp.nlst()
+    for v in files:
+        timestamp = ftp.voidcmd("MDTM " + v)[4:].strip()
+        if ((timestamp[10:12]-datetime.now().minute) >= 10):
+            ftp.delete(v)
+
+    ftp.quit()
 
     video_name = video_name.replace(' ', '%20')
 
     await bot.send_message(msg.from_user.id, "http://c97883yq.beget.tech/DownloadBotTmpVideos/" + video_name + ".mp4")
+    await bot.send_message(msg.from_user.id, "File will be deleted in 10 minutes!")
 
     await state.set_state(TestStates.all()[0])
 
