@@ -78,7 +78,7 @@ async def get_res(msg: types.Message):
     files = ftp.nlst()
     for v in files:
         timestamp = ftp.voidcmd("MDTM " + v)[4:].strip()
-        if ((timestamp[10:12]-datetime.now().minute) >= 10):
+        if (int(timestamp[10:12])-datetime.now().minute >= 10):
             ftp.delete(v)
 
     ftp.quit()
