@@ -51,7 +51,7 @@ async def get_url(msg: types.Message):
 async def get_res(msg: types.Message):
 
     res = msg.text
-    print(res)
+    print("choosed resolution " + res)
 
     if res[len(res)-1] == 'p':
         video = yt.streams.filter(progressive = True, res = res).first()
@@ -60,20 +60,21 @@ async def get_res(msg: types.Message):
 
     await bot.send_message(msg.from_user.id, "Please wait...")
 
-    print("Downloading: " + str(video))
+    print("downloading: " + yt.title + '\n' + str(video))
     video.download()
-    print("Downloaded " + yt.title + ".mp4")
+    print("downloaded")
 
     video_name = yt.title
     video_name = video_name.replace('/','')
     video_name = video_name.replace('*','')
     video_name = video_name.replace('.','')
-    print(video_name)
 
-    open_video = open(video_name + '.mp4', "rb")
     ftp = FTP('c97883yq.beget.tech','c97883yq_dwbot','Onm5b-1ju')
+    open_video = open(video_name + '.mp4', "rb")
     ftp.storbinary('STOR ' + video_name + '.mp4', open_video)
     open_video.close()
+
+    print("video recived")
 
     files = ftp.nlst()
     for v in files:
@@ -83,10 +84,14 @@ async def get_res(msg: types.Message):
 
     ftp.quit()
 
+    print("old videos deleted")
+
     video_name = video_name.replace(' ', '%20')
 
     await bot.send_message(msg.from_user.id, "http://c97883yq.beget.tech/DownloadBotTmpVideos/" + video_name + ".mp4")
     await bot.send_message(msg.from_user.id, "File will be deleted in 10 minutes!")
+
+    print("link sended")
 
     await state.set_state(TestStates.all()[0])
 
