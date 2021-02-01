@@ -77,7 +77,7 @@ async def get_res(msg: types.Message):
 
     video_name = video_name.replace(' ', '%20')
 
-    await bot.send_message(msg.from_user.id, "http://c97883yq.beget.tech/DownloadBotTmpVideos/" + video_name)
+    await bot.send_message(msg.from_user.id, "http://c97883yq.beget.tech/DownloadBotTmpVideos/" + video_name + ".mp4")
 
     await state.set_state(TestStates.all()[0])
 
