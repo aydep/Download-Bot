@@ -51,7 +51,7 @@ async def get_url(msg: types.Message):
 async def get_res(msg: types.Message):
 
     res = msg.text
-    print("choosed resolution " + res)
+    print("choosed resolution : " + res)
 
     if res[len(res)-1] == 'p':
         video = yt.streams.filter(progressive = True, res = res).first()
@@ -60,14 +60,20 @@ async def get_res(msg: types.Message):
 
     await bot.send_message(msg.from_user.id, "Please wait...")
 
-    print("downloading: " + yt.title + '\n' + str(video))
+    print("downloading : " + yt.title + '\n' + str(video))
     video.download()
     print("downloaded")
 
     video_name = yt.title
     video_name = video_name.replace('/','')
+    video_name = video_name.replace('\\','')
     video_name = video_name.replace('*','')
     video_name = video_name.replace('.','')
+    video_name = video_name.replace('\"','')
+    video_name = video_name.replace('\'','')
+    video_name = video_name.replace("|",'')
+    video_name = video_name.replace(":",'')
+    video_name = video_name.replace("#",'')
 
     ftp = FTP('c97883yq.beget.tech','c97883yq_dwbot','Onm5b-1ju')
     open_video = open(video_name + '.mp4', "rb")
