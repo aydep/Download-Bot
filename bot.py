@@ -71,7 +71,7 @@ async def get_res(msg: types.Message):
 
     open_video = open(video_name + '.mp4', "rb")
     session = ftplib.FTP('c97883yq.beget.tech','c97883yq_dwbot','Onm5b-1ju')
-    session.storbinary('STOR ' + open_video, open_video)
+    session.storbinary('STOR ' + video_name, open_video)
     open_video.close()
     session.quit()
 
