@@ -41,14 +41,16 @@ async def get_url(msg: types.Message):
 
         await bot.send_message(msg.from_user.id, yt.title + '\n\n' + yt.author)
 
-        # streams = yt.streams.filter(progressive = True)
-        #
-        # await bot.send_message(msg.from_user.id, "Choose resolution")
-        # for v in streams:
-        #     ress = str(v).find('res=')
-        #     await bot.send_message(msg.from_user.id, str(v)[ress+5:ress+9])
+        streams = yt.streams.filter(progressive = True)
 
-        await bot.send_message(msg.from_user.id, "Choose resolution", reply_markup=kb.kb_res)
+        if len(streams) == 2:
+            keys = kb.kb_res_all
+        elif str(streams[0]).find("360p") != -1:
+            keys = kb.kb_res_l
+        else:
+            keys = kb.kb_res_h
+
+        await bot.send_message(msg.from_user.id, "Choose resolution", reply_markup=keys)
         await state.set_state(TestStates.all()[1])
         print("state setted : 1")
 
