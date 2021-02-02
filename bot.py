@@ -4,11 +4,13 @@ from aiogram.utils import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from utils import TestStates
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
 
 from config import TOKEN
 from ftplib import FTP
 from datetime import datetime
 
+import keyboards as kb
 import pytube
 import os
 
@@ -17,6 +19,10 @@ dp = Dispatcher(bot)
 
 dp = Dispatcher(bot, storage=MemoryStorage())
 dp.middleware.setup(LoggingMiddleware())
+
+button_hi = KeyboardButton('Привет! 👋')
+
+greet_kb = ReplyKeyboardMarkup().add(button_hi)
 
 @dp.message_handler(state='*', commands=['start'])
 async def start_command(msg: types.Message):
@@ -35,14 +41,16 @@ async def get_url(msg: types.Message):
 
         await bot.send_message(msg.from_user.id, yt.title + '\n\n' + yt.author)
 
-        streams = yt.streams.filter(progressive = True)
+        # streams = yt.streams.filter(progressive = True)
+        #
+        # await bot.send_message(msg.from_user.id, "Choose resolution")
+        # for v in streams:
+        #     ress = str(v).find('res=')
+        #     await bot.send_message(msg.from_user.id, str(v)[ress+5:ress+9])
 
-        await bot.send_message(msg.from_user.id, "Choose resolution")
-        for v in streams:
-            ress = str(v).find('res=')
-            await bot.send_message(msg.from_user.id, str(v)[ress+5:ress+9])
-
+        await bot.send_message(msg.from_user.id, "Choose resolution", reply_markup=kb.kb_res)
         await state.set_state(TestStates.all()[1])
+        print("state setted : 1")
 
     except pytube.exceptions.RegexMatchError:
         await bot.send_message(msg.from_user.id, "incorrect link")
@@ -58,7 +66,7 @@ async def get_res(msg: types.Message):
     else:
         video = yt.streams.filter(progressive = True, res = res+'p').first()
 
-    await bot.send_message(msg.from_user.id, "Please wait...")
+    await bot.send_message(msg.from_user.id, "Please wait...", reply_markup=kb.ReplyKeyboardRemove())
 
     print("downloading : " + yt.title + '\n' + str(video))
     video.download()
